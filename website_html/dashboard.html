@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Signage Dashboard</title>
+<style>
+  :root {
+    --card-yellow:   #d8bd45;
+    --card-yellow-2: #c9ad3b;
+    --ink: #141414;
+    --border: #2a2a2a;
+  }
+
+  /* ── Base ──────────────────────────────────────── */
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #000;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── Full-Screen Media Carousel ────────────────── */
+  .main-content {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .media-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+  }
+
+  .media-layer.active { opacity: 1; }
+
+  /* ── Vignette overlay ──────────────────────────── */
+  .vignette-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* ── Events Shield — top left ──────────────────── */
+  .upcoming-events {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 200;
+    width: 300px;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
+  }
+
+  .event-module .topbar {
+    height: 12px;
+    background: #0f0f0f;
+    border: 3px solid var(--border);
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .event-module .card {
+    border: 3px solid var(--border);
+    border-top: 0;
+    background: linear-gradient(180deg, var(--card-yellow) 0%, var(--card-yellow-2) 100%);
+    padding: 14px 14px 22px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 86%, 50% 100%, 0% 86%);
+  }
+
+  .event-module .title {
+    font-weight: 800;
+    color: var(--ink);
+    font-size: 22px;
+    line-height: 1.1;
+    margin: 4px 6px 10px;
+  }
+
+  .ev-row {
+    display: grid;
+    grid-template-columns: 74px 1fr;
+    gap: 8px;
+    padding: 8px 6px;
+    border-top: 2px solid rgba(0,0,0,.35);
+  }
+
+  .ev-row .col-left .dow  { font-weight: 700; color: rgba(0,0,0,.7);  font-size: 13px; margin-bottom: 3px; }
+  .ev-row .col-left .time { font-weight: 800; color: rgba(0,0,0,.9);  font-size: 13px; }
+  .ev-row .col-right .date { font-weight: 800; color: rgba(0,0,0,.75); font-size: 13px; margin-bottom: 4px; }
+  .ev-row .col-right .name { font-weight: 900; color: rgba(255,255,255,.85); text-shadow: 0 1px 0 rgba(0,0,0,.2); font-size: 12px; line-height: 1.2; margin-bottom: 3px; }
+  .ev-row .col-right .meta { font-weight: 700; color: rgba(0,0,0,.8); font-size: 11px; line-height: 1.2; }
+
+  /* ── Center Calendar ───────────────────────────── */
+  .center-calendar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 68vw;
+    z-index: 5;
+  }
+
+  .cal-week-range {
+    text-align: center;
+    color: rgba(255,255,255,.75);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .cal-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+
+  .cal-day {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 12px;
+    padding: 10px 8px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cal-day.today {
+    background: rgba(0, 123, 255, 0.35);
+    border-color: rgba(0,123,255,0.6);
+  }
+
+  .cal-day-header {
+    font-weight: 700;
+    font-size: 11px;
+    color: rgba(255,255,255,.9);
+    margin-bottom: 6px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .cal-event {
+    background: rgba(0,123,255,0.8);
+    color: white;
+    padding: 4px 6px;
+    border-radius: 5px;
+    margin-bottom: 4px;
+    font-size: 10px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  .cal-no-event {
+    font-size: 10px;
+    color: rgba(255,255,255,.35);
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  /* ── Time + Weather — bottom right ─────────────── */
+  .fixed-widget-container {
+    position: fixed;
+    bottom: 120px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 10;
+  }
+
+  .widget {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 18px 20px;
+    width: 210px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  .widget h3 {
+    margin: 0 0 8px 0;
+    color: #555;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  .primary-display {
+    font-size: 2.4em;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .secondary-display {
+    color: #555;
+    font-size: 0.9em;
+    text-transform: capitalize;
+  }
+
+  .weather-icon-svg { width: 38px; height: 38px; }
+
+  /* ── Ads Banner — bottom ───────────────────────── */
+  @keyframes slide {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .ads-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    overflow: hidden;
+    padding: 10px 0;
+    background: white;
+    white-space: nowrap;
+    z-index: 8;
+    height: 100px;
+    display: flex;
+    align-items: center;
+  }
+
+  .ads-banner::before,
+  .ads-banner::after {
+    position: absolute;
+    top: 0;
+    width: 120px;
+    height: 100%;
+    content: "";
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .ads-banner::before {
+    left: 0;
+    background: linear-gradient(to right, white, rgba(255,255,255,0));
+  }
+
+  .ads-banner::after {
+    right: 0;
+    background: linear-gradient(to left, white, rgba(255,255,255,0));
+  }
+
+  .ads-banner:hover .logos-slide { animation-play-state: paused; }
+
+  .logos-slide {
+    display: inline-flex;
+    align-items: center;
+    animation: slide 22s infinite linear;
+  }
+
+  .logos-slide img {
+    height: 70px;
+    margin: 0 36px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Background Media Carousel ─────────────────── -->
+<main class="main-content" id="carousel-container"></main>
+<div class="vignette-overlay"></div>
+
+<!-- ── Events Shield (top left) ──────────────────── -->
+<div class="upcoming-events">
+  <div class="event-module">
+    <div class="topbar"></div>
+    <section class="card">
+      <div class="title">Upcoming Events</div>
+
+      <div class="ev-row">
+        <div class="col-left">
+          <div class="dow">Fri.</div>
+          <div class="time">8:00 AM</div>
+        </div>
+        <div class="col-right">
+          <div class="date">October 2</div>
+          <div class="name">MCC Board of Trustees Executive Session</div>
+          <div class="meta">Streaming the Board of Trustees web page</div>
+        </div>
+      </div>
+
+      <div class="ev-row">
+        <div class="col-left">
+          <div class="dow">Mon.</div>
+          <div class="time">8:45 AM</div>
+        </div>
+        <div class="col-right">
+          <div class="date">October 5</div>
+          <div class="name">2022 Teaching &amp; Learning Conference</div>
+          <div class="meta">Online Webinar</div>
+        </div>
+      </div>
+
+      <div class="ev-row">
+        <div class="col-left">
+          <div class="dow">Wed.</div>
+          <div class="time">12:00 PM</div>
+        </div>
+        <div class="col-right">
+          <div class="date">October 7</div>
+          <div class="name">Medical Office Assistant Program Info</div>
+          <div class="meta">Zoom Webinar</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ── Center Calendar ────────────────────────────── -->
+<div class="center-calendar">
+  <div class="cal-week-range" id="cal-week-range"></div>
+  <div class="cal-week" id="cal-week"></div>
+</div>
+
+<!-- ── Time + Weather (bottom right) ─────────────── -->
+<div class="fixed-widget-container">
+  <div class="widget">
+    <h3>Local Time</h3>
+    <div class="primary-display" id="time">--:--</div>
+    <div class="secondary-display" id="date">Loading...</div>
+  </div>
+
+  <div class="widget">
+    <h3>Weather (NYC)</h3>
+    <div class="primary-display">
+      <div id="weather-icon-container"></div>
+      <div id="temp">--°</div>
+    </div>
+    <div class="secondary-display" id="weather-desc">Loading...</div>
+  </div>
+</div>
+
+<!-- ── Ads Banner (bottom) ───────────────────────── -->
+<div class="ads-banner">
+  <div class="logos-slide" id="logos-slide">
+    <img src="assets/logos/bmw.svg"                   alt="BMW" />
+    <img src="assets/logos/cadillac.svg"              alt="Cadillac" />
+    <img src="assets/logos/coca_cola.svg"             alt="Coca-Cola" />
+    <img src="assets/logos/gucci.svg"                 alt="Gucci" />
+    <img src="assets/logos/mcdonald.svg"              alt="McDonald's" />
+    <img src="assets/logos/nike.svg"                  alt="Nike" />
+    <img src="assets/logos/pepsi.svg"                 alt="Pepsi" />
+    <img src="assets/logos/puma.svg"                  alt="Puma" />
+    <img src="assets/logos/umass.svg"                 alt="UMass" />
+    <img src="assets/logos/logo-lavache-qui-rit-1.svg" alt="La Vache qui rit" />
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── 1. Ads banner — clone for seamless loop ─────── */
+  const slide = document.getElementById('logos-slide');
+  slide.parentNode.appendChild(slide.cloneNode(true));
+
+
+  /* ── 2. Media Carousel ───────────────────────────── */
+  const carousel = document.getElementById('carousel-container');
+  const playlist = [
+    { type: 'image', src: 'https://images.unsplash.com/photo-1541753236788-b0ac1fc5009d?q=80&w=2612&auto=format&fit=crop' },
+    { type: 'image', src: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2670&auto=format&fit=crop' },
+    // { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+  ];
+  let idx = 0, cur = null;
+
+  function showNextMedia() {
+    const m = playlist[idx];
+    let el;
+    if (m.type === 'video') {
+      el = document.createElement('video');
+      el.src = m.src; el.autoplay = true; el.muted = true; el.loop = true; el.playsInline = true;
+    } else {
+      el = document.createElement('img');
+      el.src = m.src; el.alt = '';
+    }
+    el.className = 'media-layer';
+    carousel.appendChild(el);
+    void el.offsetWidth;
+    el.classList.add('active');
+    if (cur) { const old = cur; old.classList.remove('active'); setTimeout(() => old.remove(), 1500); }
+    cur = el;
+    idx = (idx + 1) % playlist.length;
+  }
+  showNextMedia();
+  setInterval(showNextMedia, 8000);
+
+
+  /* ── 3. Clock ────────────────────────────────────── */
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('time').textContent =
+      now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('date').textContent =
+      now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+
+
+  /* ── 4. Weather ──────────────────────────────────── */
+  async function fetchWeather() {
+    try {
+      const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true');
+      if (!r.ok) return;
+      const d = await r.json();
+      const temp = Math.round(d.current_weather.temperature);
+      const code = d.current_weather.weathercode;
+      document.getElementById('temp').textContent = `${temp}°C`;
+      document.getElementById('weather-desc').textContent = weatherDesc(code);
+      document.getElementById('weather-icon-container').innerHTML = weatherSVG(code);
+    } catch(e) { console.error(e); }
+  }
+
+  function weatherDesc(c) {
+    if (c === 0)              return 'Clear sky';
+    if (c <= 3)               return 'Partly cloudy';
+    if (c >= 45 && c <= 48)   return 'Foggy';
+    if (c >= 51 && c <= 67)   return 'Rain';
+    if (c >= 71 && c <= 77)   return 'Snow';
+    if (c >= 80 && c <= 82)   return 'Showers';
+    if (c >= 95)              return 'Thunderstorm';
+    return 'Unknown';
+  }
+
+  function weatherSVG(c) {
+    const sun   = `<svg class="weather-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#e67e22"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#e67e22" stroke-width="2" stroke-linecap="round"/></svg>`;
+    const cloud = `<svg class="weather-icon-svg" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="#7f8c8d"/></svg>`;
+    const fog   = `<svg class="weather-icon-svg" viewBox="0 0 24 24"><path d="M4 10h16v2H4zm0 4h16v2H4zm0 4h16v2H4z" fill="#7f8c8d"/></svg>`;
+    const rain  = `<svg class="weather-icon-svg" viewBox="0 0 24 24"><path d="M16 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="#7f8c8d"/><path d="M8 21v2m4-2v2m4-2v2" stroke="#2980b9" stroke-width="2" stroke-linecap="round"/></svg>`;
+    const snow  = `<svg class="weather-icon-svg" viewBox="0 0 24 24"><path d="M16 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="#7f8c8d"/><path d="M8 21h.01M12 21h.01M16 21h.01" stroke="#2980b9" stroke-width="3" stroke-linecap="round"/></svg>`;
+    const thund = `<svg class="weather-icon-svg" viewBox="0 0 24 24"><path d="M16 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="#7f8c8d"/><path d="M13 14l-2 4h3l-1 4" stroke="#f1c40f" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    if (c === 0) return sun;
+    if (c <= 3)  return cloud;
+    if (c >= 45 && c <= 48) return fog;
+    if ((c >= 51 && c <= 67) || (c >= 80 && c <= 82)) return rain;
+    if (c >= 71 && c <= 77) return snow;
+    if (c >= 95) return thund;
+    return cloud;
+  }
+
+  fetchWeather();
+  setInterval(fetchWeather, 1800000);
+
+
+  /* ── 5. Weekly Calendar ──────────────────────────── */
+  async function renderCalendar() {
+    const weekEl  = document.getElementById('cal-week');
+    const rangeEl = document.getElementById('cal-week-range');
+    weekEl.innerHTML = '';
+
+    const today = new Date();
+
+    // Start of week (Sunday)
+    const start = new Date(today);
+    start.setDate(today.getDate() - today.getDay());
+
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+
+    const fmt = d => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    rangeEl.textContent = `${fmt(start)} – ${fmt(end)}`;
+
+    // Fetch US public holidays
+    let holidays = [];
+    try {
+      const r = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${today.getFullYear()}/US`);
+      if (r.ok) holidays = await r.json();
+    } catch(e) { /* no holidays if offline */ }
+
+    const stored = JSON.parse(localStorage.getItem('events') || '[]');
+
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(start);
+      day.setDate(start.getDate() + i);
+
+      const isToday = day.toDateString() === today.toDateString();
+
+      const dayEl = document.createElement('div');
+      dayEl.className = 'cal-day' + (isToday ? ' today' : '');
+
+      const hdr = document.createElement('div');
+      hdr.className = 'cal-day-header';
+      hdr.textContent = day.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' });
+      dayEl.appendChild(hdr);
+
+      const dayHolidays = holidays.filter(h => new Date(h.date).toDateString() === day.toDateString());
+      const dayCustom   = stored.filter(e => new Date(e.date).toDateString() === day.toDateString());
+      const all = [...dayHolidays, ...dayCustom];
+
+      if (all.length === 0) {
+        const none = document.createElement('div');
+        none.className = 'cal-no-event';
+        none.textContent = '—';
+        dayEl.appendChild(none);
+      } else {
+        all.forEach(ev => {
+          const evEl = document.createElement('div');
+          evEl.className = 'cal-event';
+          evEl.textContent = ev.localName || ev.title;
+          dayEl.appendChild(evEl);
+        });
+      }
+
+      weekEl.appendChild(dayEl);
+    }
+  }
+
+  renderCalendar();
+});
+</script>
+
+</body>
+</html>
