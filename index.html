@@ -21,27 +21,23 @@
     overflow: hidden;
   }
 
-  /* ── Full-Screen Media Carousel ── */
   .main-content { position: absolute; inset: 0; z-index: 1; }
 
   .media-layer {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0;
+    object-fit: cover; opacity: 0;
     transition: opacity 1.5s ease-in-out;
   }
-
   .media-layer.active { opacity: 1; }
 
   .vignette-overlay {
     position: absolute; inset: 0;
     background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%);
-    z-index: 2;
-    pointer-events: none;
+    z-index: 2; pointer-events: none;
   }
 
-  /* ── Draggable Widget Wrapper ── */
+  /* ══ Draggable wrapper ══ */
   .draggable-widget {
     position: fixed;
     z-index: 200;
@@ -50,382 +46,327 @@
 
   .widget-drag-handle {
     position: absolute;
-    top: -30px;
-    left: 0; right: 0;
-    height: 30px;
+    top: -30px; left: 0; right: 0; height: 30px;
     background: rgba(0,0,0,0.55);
     backdrop-filter: blur(8px);
     border-radius: 10px 10px 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 0 8px;
     cursor: grab;
-    opacity: 0;
-    transition: opacity 0.2s;
+    opacity: 0; transition: opacity 0.2s;
   }
-
   .draggable-widget:hover .widget-drag-handle { opacity: 1; }
   .widget-drag-handle.dragging { cursor: grabbing; }
 
-  .drag-label {
-    color: rgba(255,255,255,0.75);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
+  .drag-label { color: rgba(255,255,255,0.75); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
 
   .widget-close-btn {
-    background: rgba(255,70,70,0.85);
-    border: none; color: white;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 11px;
+    background: rgba(255,70,70,0.85); border: none; color: white;
+    width: 20px; height: 20px; border-radius: 50%;
+    cursor: pointer; font-size: 11px;
     display: flex; align-items: center; justify-content: center;
-    padding: 0; line-height: 1;
-    transition: background 0.15s;
+    padding: 0; transition: background 0.15s;
   }
   .widget-close-btn:hover { background: rgba(220,40,40,1); }
 
-  /* ── Events Shield ── */
-  .upcoming-events {
-    width: 300px;
-    filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
+  /* ══ Compact / Expanded toggle ══ */
+  .draggable-widget[data-size="compact"]  .wsize-compact  { display: block; }
+  .draggable-widget[data-size="compact"]  .wsize-expanded { display: none;  }
+  .draggable-widget[data-size="expanded"] .wsize-compact  { display: none;  }
+  .draggable-widget[data-size="expanded"] .wsize-expanded { display: block; }
+
+  /* ══ COMPACT — Clock card ══ */
+  .clock-compact-card {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(14px);
+    border-radius: 16px;
+    padding: 13px 18px 11px;
+    width: 225px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
   }
+  .clock-compact-card:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,0.38); }
+
+  .cc-row1 { display: flex; align-items: center; gap: 8px; }
+  .cc-time { font-size: 1.65em; font-weight: 800; color: #1a2533; line-height: 1; }
+  .cc-pipe { color: rgba(0,0,0,0.18); font-size: 1.4em; font-weight: 200; }
+  .cc-weather-inline { display: flex; align-items: center; gap: 4px; margin-left: 2px; }
+  .cc-icon-sm { width: 26px; height: 26px; }
+  .cc-temp-inline { font-size: 1.15em; font-weight: 700; color: #1a2533; }
+  .cc-row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+  .cc-date-inline { font-size: 11.5px; color: #666; font-weight: 500; }
+  .cc-desc-inline { font-size: 11px; color: #888; }
+  .cc-expand-hint { font-size: 10px; color: rgba(0,0,0,0.28); margin-top: 4px; text-align: right; }
+
+  /* ══ EXPANDED — Clock cards ══ */
+  .fixed-widget-container { display: flex; flex-direction: column; gap: 14px; }
+
+  .widget {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+    padding: 18px 20px;
+    width: 230px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.45);
+  }
+  .widget h3 { margin: 0 0 8px; color: #555; font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+
+  .primary-display {
+    font-size: 2.5em; font-weight: 800; margin-bottom: 2px; color: #1a2533;
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+  }
+  .secondary-display { color: #555; font-size: 0.9em; text-transform: capitalize; }
+  .weather-icon-svg { width: 38px; height: 38px; }
+
+  .weather-extras {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 7px; margin-top: 12px;
+  }
+  .weather-extra-item {
+    background: rgba(0,0,0,0.05);
+    border-radius: 9px; padding: 7px 8px; text-align: center;
+  }
+  .wex-label { font-size: 9px; color: #999; text-transform: uppercase; letter-spacing: 0.9px; font-weight: 700; }
+  .wex-val { font-size: 15px; font-weight: 800; color: #2c3e50; margin-top: 2px; }
+
+  .collapse-row { display: flex; justify-content: center; margin-top: 4px; }
+  .collapse-btn {
+    background: rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.12);
+    color: #888; border-radius: 20px; padding: 4px 16px;
+    font-size: 11px; font-weight: 700; cursor: pointer; transition: background 0.2s;
+  }
+  .collapse-btn:hover { background: rgba(0,0,0,0.12); color: #444; }
+
+  /* ══ COMPACT — Events badge ══ */
+  .events-compact-badge {
+    background: linear-gradient(135deg, var(--card-yellow) 0%, var(--card-yellow-2) 100%);
+    border-radius: 14px;
+    padding: 12px 15px;
+    width: 270px;
+    box-shadow: 0 8px 26px rgba(0,0,0,0.32);
+    border: 2px solid rgba(0,0,0,0.12);
+    cursor: pointer;
+    display: flex; align-items: center; gap: 11px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .events-compact-badge:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,0.42); }
+  .ecb-icon { font-size: 24px; flex-shrink: 0; }
+  .ecb-body { flex: 1; min-width: 0; }
+  .ecb-title { font-weight: 800; font-size: 12px; color: var(--ink); text-transform: uppercase; letter-spacing: 0.5px; }
+  .ecb-next { font-size: 11.5px; color: rgba(0,0,0,0.65); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  .ecb-count { background: rgba(0,0,0,0.18); color: var(--ink); font-size: 13px; font-weight: 900; padding: 4px 10px; border-radius: 20px; flex-shrink: 0; }
+
+  /* ══ EXPANDED — Events shield ══ */
+  .upcoming-events { width: 300px; filter: drop-shadow(0 10px 18px rgba(0,0,0,.45)); }
 
   .event-module .topbar {
-    height: 12px;
-    background: #0f0f0f;
-    border: 3px solid var(--border);
-    border-bottom: 0;
+    height: 12px; background: #0f0f0f;
+    border: 3px solid var(--border); border-bottom: 0;
     border-radius: 3px 3px 0 0;
   }
-
   .event-module .card {
-    border: 3px solid var(--border);
-    border-top: 0;
+    border: 3px solid var(--border); border-top: 0;
     background: linear-gradient(180deg, var(--card-yellow) 0%, var(--card-yellow-2) 100%);
-    padding: 14px 14px 22px;
+    padding: 14px 14px 26px;
     clip-path: polygon(0% 0%, 100% 0%, 100% 86%, 50% 100%, 0% 86%);
   }
-
-  .event-module .title {
-    font-weight: 800; color: var(--ink);
-    font-size: 22px; line-height: 1.1;
-    margin: 4px 6px 10px;
+  .event-module .title { font-weight: 800; color: var(--ink); font-size: 22px; line-height: 1.1; margin: 4px 6px 4px; }
+  .event-module .title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .events-collapse-btn {
+    background: rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.2);
+    color: rgba(0,0,0,0.55); border-radius: 20px;
+    padding: 3px 12px; font-size: 10px; font-weight: 800;
+    cursor: pointer; transition: background 0.2s;
   }
+  .events-collapse-btn:hover { background: rgba(0,0,0,0.22); }
 
   .ev-row {
-    display: grid;
-    grid-template-columns: 74px 1fr;
-    gap: 8px;
-    padding: 8px 6px;
+    display: grid; grid-template-columns: 74px 1fr;
+    gap: 8px; padding: 8px 6px;
     border-top: 2px solid rgba(0,0,0,.35);
   }
-
   .ev-row .col-left .dow  { font-weight: 700; color: rgba(0,0,0,.7);  font-size: 13px; margin-bottom: 3px; }
   .ev-row .col-left .time { font-weight: 800; color: rgba(0,0,0,.9);  font-size: 13px; }
   .ev-row .col-right .date { font-weight: 800; color: rgba(0,0,0,.75); font-size: 13px; margin-bottom: 4px; }
   .ev-row .col-right .name { font-weight: 900; color: rgba(255,255,255,.85); text-shadow: 0 1px 0 rgba(0,0,0,.2); font-size: 12px; line-height: 1.2; margin-bottom: 3px; }
   .ev-row .col-right .meta { font-weight: 700; color: rgba(0,0,0,.8); font-size: 11px; line-height: 1.2; }
 
-  /* ── Center Calendar ── */
+  /* ══ Center Calendar ══ */
   .center-calendar {
-    position: fixed;
-    top: 50%; left: 50%;
+    position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 68vw;
-    z-index: 5;
+    width: 68vw; z-index: 5;
   }
+
+  .cal-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; margin-bottom: 10px;
+  }
+  .cal-nav-btn {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.28);
+    color: white; width: 38px; height: 38px;
+    border-radius: 50%; cursor: pointer;
+    font-size: 20px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  .cal-nav-btn:hover { background: rgba(255,255,255,0.32); transform: scale(1.1); }
+  .cal-nav-btn:active { transform: scale(0.92); }
 
   .cal-week-range {
-    text-align: center;
-    color: rgba(255,255,255,.75);
-    font-size: 13px; font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
+    text-align: center; color: rgba(255,255,255,.8);
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    min-width: 160px;
   }
+
+  .cal-today-btn {
+    background: rgba(0,123,255,0.25);
+    border: 1px solid rgba(0,123,255,0.5);
+    color: rgba(255,255,255,0.85);
+    border-radius: 20px; padding: 5px 16px;
+    font-size: 11px; font-weight: 700; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .cal-today-btn:hover { background: rgba(0,123,255,0.5); }
 
   .cal-week {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;
   }
-
   .cal-day {
     background: rgba(255,255,255,0.1);
     backdrop-filter: blur(14px);
     border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 12px;
-    padding: 10px 8px;
-    min-height: 110px;
-    display: flex; flex-direction: column;
+    border-radius: 12px; padding: 10px 8px;
+    min-height: 110px; display: flex; flex-direction: column;
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s, transform 0.15s;
   }
-
-  .cal-day:hover {
-    background: rgba(255,255,255,0.22);
-    border-color: rgba(255,255,255,0.45);
-    transform: translateY(-2px);
-  }
-
-  .cal-day.today {
-    background: rgba(0,123,255,0.35);
-    border-color: rgba(0,123,255,0.65);
-  }
-
+  .cal-day:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.45); transform: translateY(-2px); }
+  .cal-day.today { background: rgba(0,123,255,0.35); border-color: rgba(0,123,255,0.65); }
   .cal-day.today:hover { background: rgba(0,123,255,0.5); }
+  .cal-day.other-week { opacity: 0.6; }
 
   .cal-day-header {
-    font-weight: 700; font-size: 11px;
-    color: rgba(255,255,255,.9);
-    margin-bottom: 6px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 700; font-size: 11px; color: rgba(255,255,255,.9);
+    margin-bottom: 6px; text-align: center;
+    text-transform: uppercase; letter-spacing: 0.5px;
   }
-
   .cal-event {
-    background: rgba(0,123,255,0.8);
-    color: white;
-    padding: 4px 6px; border-radius: 5px;
-    margin-bottom: 4px;
+    background: rgba(0,123,255,0.8); color: white;
+    padding: 4px 6px; border-radius: 5px; margin-bottom: 4px;
     font-size: 10px; line-height: 1.3; font-weight: 600;
   }
-
   .cal-no-event {
     font-size: 10px; color: rgba(255,255,255,.35);
-    text-align: center;
-    margin-top: auto; margin-bottom: auto;
+    text-align: center; margin-top: auto; margin-bottom: auto;
   }
 
-  /* ── Time + Weather widgets ── */
-  .fixed-widget-container {
-    display: flex; flex-direction: column;
-    gap: 16px;
-  }
-
-  .widget {
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    padding: 18px 20px;
-    width: 210px;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.4);
-  }
-
-  .widget h3 {
-    margin: 0 0 8px 0; color: #555;
-    font-size: 0.8em; text-transform: uppercase;
-    letter-spacing: 1px; font-weight: 600;
-  }
-
-  .primary-display {
-    font-size: 2.4em; font-weight: 700;
-    margin-bottom: 2px; color: #2c3e50;
-    display: flex; justify-content: center; align-items: center; gap: 10px;
-  }
-
-  .secondary-display { color: #555; font-size: 0.9em; text-transform: capitalize; }
-  .weather-icon-svg { width: 38px; height: 38px; }
-
-  /* ── Commercial Strip ── */
+  /* ══ Commercial Strip ══ */
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
-
   .commercial-strip {
-    position: fixed;
-    bottom: 0; left: 0;
-    width: 100vw; height: 58px;
-    overflow: hidden;
+    position: fixed; bottom: 0; left: 0;
+    width: 100vw; height: 58px; overflow: hidden;
     background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
     border-top: 2px solid rgba(255,255,255,0.12);
-    z-index: 8;
-    display: flex; align-items: center;
+    z-index: 8; display: flex; align-items: center;
   }
-
   .commercial-strip::before,
   .commercial-strip::after {
     position: absolute; top: 0;
     width: 90px; height: 100%;
-    content: ""; z-index: 2;
-    pointer-events: none;
+    content: ""; z-index: 2; pointer-events: none;
   }
-
-  .commercial-strip::before {
-    left: 0;
-    background: linear-gradient(to right, #0f0c29, transparent);
-  }
-
-  .commercial-strip::after {
-    right: 50px;
-    background: linear-gradient(to left, #24243e, transparent);
-  }
-
+  .commercial-strip::before { left: 0; background: linear-gradient(to right, #0f0c29, transparent); }
+  .commercial-strip::after  { right: 50px; background: linear-gradient(to left, #24243e, transparent); }
   .commercial-strip:hover .commercial-track { animation-play-state: paused; }
 
   .commercial-track {
-    display: inline-flex;
-    align-items: center;
+    display: inline-flex; align-items: center;
     animation: marquee 30s infinite linear;
     white-space: nowrap;
   }
-
   .commercial-section {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 28px;
-    height: 58px;
-    border-right: 1px solid rgba(255,255,255,0.12);
-    flex-shrink: 0;
+    display: inline-flex; align-items: center;
+    gap: 10px; padding: 0 28px; height: 58px;
+    border-right: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;
   }
-
   .commercial-section .sect-icon { font-size: 20px; }
-
-  .commercial-section .sect-text {
-    color: rgba(255,255,255,0.92);
-    font-size: 14px; font-weight: 600;
-    letter-spacing: 0.2px;
-  }
-
+  .commercial-section .sect-text { color: rgba(255,255,255,0.92); font-size: 14px; font-weight: 600; letter-spacing: 0.2px; }
   .commercial-section .sect-tag {
-    background: rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.75);
-    font-size: 9px; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 1.2px;
-    padding: 3px 9px; border-radius: 20px;
+    background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.75);
+    font-size: 9px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1.2px; padding: 3px 9px; border-radius: 20px;
     border: 1px solid rgba(255,255,255,0.2);
   }
-
   .commercial-edit-btn {
-    position: absolute;
-    right: 8px; top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.25);
-    color: rgba(255,255,255,0.8);
-    width: 36px; height: 36px;
-    border-radius: 50%;
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    z-index: 10; background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8);
+    width: 36px; height: 36px; border-radius: 50%;
     cursor: pointer; font-size: 16px;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.2s, color 0.2s;
   }
   .commercial-edit-btn:hover { background: rgba(255,255,255,0.25); color: white; }
 
-  /* ── Modals ── */
+  /* ══ Modals ══ */
   .modal-overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(6px);
-    z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.2s;
+    background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+    z-index: 1000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
   }
-
   .modal-overlay.open { opacity: 1; pointer-events: all; }
 
   .modal {
     background: rgba(15,15,25,0.96);
     border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 20px;
-    padding: 28px;
+    border-radius: 20px; padding: 28px;
     width: 440px; max-width: 90vw;
     max-height: 80vh; overflow-y: auto;
-    color: white;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    color: white; box-shadow: 0 24px 60px rgba(0,0,0,0.6);
   }
-
-  .modal h2 {
-    margin: 0 0 20px; font-size: 20px;
-    font-weight: 700; color: white;
-  }
-
-  .modal-section-title {
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1.2px;
-    color: rgba(255,255,255,0.45);
-    margin: 18px 0 8px;
-  }
-
-  .modal-event-item {
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(255,255,255,0.07);
-    border-radius: 10px;
-    padding: 10px 14px; margin-bottom: 6px;
-    font-size: 13px;
-  }
-
+  .modal h2 { margin: 0 0 20px; font-size: 20px; font-weight: 700; }
+  .modal-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.45); margin: 18px 0 8px; }
+  .modal-event-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.07); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; font-size: 13px; }
   .modal-event-item .ev-info { flex: 1; min-width: 0; }
   .modal-event-item .ev-name { font-weight: 600; color: white; }
   .modal-event-item .ev-time { color: rgba(255,255,255,0.45); font-size: 11px; margin-top: 2px; }
-
-  .modal-delete-btn {
-    background: rgba(255,80,80,0.15);
-    border: 1px solid rgba(255,80,80,0.35);
-    color: #ff6060; border-radius: 7px;
-    padding: 5px 12px; cursor: pointer;
-    font-size: 12px; font-weight: 600;
-    margin-left: 10px; flex-shrink: 0;
-    transition: background 0.2s;
-  }
+  .modal-delete-btn { background: rgba(255,80,80,0.15); border: 1px solid rgba(255,80,80,0.35); color: #ff6060; border-radius: 7px; padding: 5px 12px; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: 10px; flex-shrink: 0; transition: background 0.2s; }
   .modal-delete-btn:hover { background: rgba(255,80,80,0.35); }
-
   .modal-form { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-
-  .modal-form input {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 9px;
-    padding: 11px 14px;
-    color: white; font-size: 14px; outline: none;
-    width: 100%;
-    transition: border-color 0.2s;
-  }
+  .modal-form input { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 9px; padding: 11px 14px; color: white; font-size: 14px; outline: none; width: 100%; transition: border-color 0.2s; }
   .modal-form input::placeholder { color: rgba(255,255,255,0.35); }
   .modal-form input:focus { border-color: rgba(0,123,255,0.7); }
-
   .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
-
-  .modal-btn {
-    flex: 1; padding: 13px; border-radius: 10px;
-    border: none; font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: opacity 0.2s;
-  }
+  .modal-btn { flex: 1; padding: 13px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
   .modal-btn:hover { opacity: 0.82; }
   .modal-btn.primary { background: #007bff; color: white; }
   .modal-btn.secondary { background: rgba(255,255,255,0.12); color: white; }
 
-  /* ── Restore bar ── */
+  /* ══ Restore bar ══ */
   .restore-bar {
-    position: fixed;
-    top: 12px; left: 50%;
-    transform: translateX(-50%);
-    z-index: 500;
-    display: flex; gap: 8px;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
+    position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+    z-index: 500; display: flex; gap: 8px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
   }
-
   .restore-bar.visible { opacity: 1; pointer-events: all; }
-
   .restore-btn {
-    background: rgba(0,0,0,0.65);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: white; padding: 7px 18px;
-    border-radius: 22px; cursor: pointer;
-    font-size: 12px; font-weight: 700;
-    letter-spacing: 0.3px;
+    background: rgba(0,0,0,0.65); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.3); color: white;
+    padding: 7px 18px; border-radius: 22px; cursor: pointer;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
     transition: background 0.2s;
   }
   .restore-btn:hover { background: rgba(255,255,255,0.2); }
@@ -433,79 +374,144 @@
 </head>
 <body>
 
-<!-- ── Background Media Carousel ── -->
 <main class="main-content" id="carousel-container"></main>
 <div class="vignette-overlay"></div>
-
-<!-- ── Restore bar (shown when widgets are hidden) ── -->
 <div class="restore-bar" id="restore-bar"></div>
 
-<!-- ── Events Shield (top RIGHT) — draggable ── -->
-<div class="draggable-widget" id="widget-events" style="top:30px;right:30px;">
+<!-- ══ Events Widget (top right) ══ -->
+<div class="draggable-widget" id="widget-events" data-size="compact">
   <div class="widget-drag-handle" id="handle-events">
     <span class="drag-label">⠿ Move</span>
     <button class="widget-close-btn" onclick="hideWidget('events')">✕</button>
   </div>
-  <div class="upcoming-events">
-    <div class="event-module">
-      <div class="topbar"></div>
-      <section class="card">
-        <div class="title">Upcoming Events</div>
-        <div id="events-list">
-          <div class="ev-row">
-            <div class="col-left"><div class="dow">Fri.</div><div class="time">8:00 AM</div></div>
-            <div class="col-right"><div class="date">October 2</div><div class="name">MCC Board of Trustees Executive Session</div><div class="meta">Streaming the Board of Trustees web page</div></div>
+
+  <!-- COMPACT -->
+  <div class="wsize-compact">
+    <div class="events-compact-badge" onclick="toggleWidgetSize('events')">
+      <div class="ecb-icon">📅</div>
+      <div class="ecb-body">
+        <div class="ecb-title">Upcoming Events</div>
+        <div class="ecb-next" id="ecb-next">MCC Board of Trustees Executive Session</div>
+      </div>
+      <div class="ecb-count" id="ecb-count">3</div>
+    </div>
+  </div>
+
+  <!-- EXPANDED -->
+  <div class="wsize-expanded">
+    <div class="upcoming-events">
+      <div class="event-module">
+        <div class="topbar"></div>
+        <section class="card">
+          <div class="title-row">
+            <div class="title">Upcoming Events</div>
+            <button class="events-collapse-btn" onclick="toggleWidgetSize('events')">▲ Minimize</button>
           </div>
-          <div class="ev-row">
-            <div class="col-left"><div class="dow">Mon.</div><div class="time">8:45 AM</div></div>
-            <div class="col-right"><div class="date">October 5</div><div class="name">2022 Teaching &amp; Learning Conference</div><div class="meta">Online Webinar</div></div>
+          <div id="events-list">
+            <div class="ev-row">
+              <div class="col-left"><div class="dow">Fri.</div><div class="time">8:00 AM</div></div>
+              <div class="col-right"><div class="date">October 2</div><div class="name">MCC Board of Trustees Executive Session</div><div class="meta">Streaming the Board of Trustees web page</div></div>
+            </div>
+            <div class="ev-row">
+              <div class="col-left"><div class="dow">Mon.</div><div class="time">8:45 AM</div></div>
+              <div class="col-right"><div class="date">October 5</div><div class="name">2022 Teaching &amp; Learning Conference</div><div class="meta">Online Webinar</div></div>
+            </div>
+            <div class="ev-row">
+              <div class="col-left"><div class="dow">Wed.</div><div class="time">12:00 PM</div></div>
+              <div class="col-right"><div class="date">October 7</div><div class="name">Medical Office Assistant Program Info</div><div class="meta">Zoom Webinar</div></div>
+            </div>
           </div>
-          <div class="ev-row">
-            <div class="col-left"><div class="dow">Wed.</div><div class="time">12:00 PM</div></div>
-            <div class="col-right"><div class="date">October 7</div><div class="name">Medical Office Assistant Program Info</div><div class="meta">Zoom Webinar</div></div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ── Center Calendar ── -->
-<div class="center-calendar">
-  <div class="cal-week-range" id="cal-week-range"></div>
+<!-- ══ Center Calendar ══ -->
+<div class="center-calendar" id="center-calendar">
+  <div class="cal-nav">
+    <button class="cal-nav-btn" onclick="calNav(-1)" title="Previous week">‹</button>
+    <div class="cal-week-range" id="cal-week-range">—</div>
+    <button class="cal-nav-btn" onclick="calNav(1)" title="Next week">›</button>
+    <button class="cal-today-btn" onclick="calGoToday()">Today</button>
+  </div>
   <div class="cal-week" id="cal-week"></div>
 </div>
 
-<!-- ── Time + Weather (bottom RIGHT, just above strip) — draggable ── -->
-<div class="draggable-widget" id="widget-clock" style="bottom:68px;right:30px;">
+<!-- ══ Clock + Weather Widget (bottom right) ══ -->
+<div class="draggable-widget" id="widget-clock" data-size="compact">
   <div class="widget-drag-handle" id="handle-clock">
     <span class="drag-label">⠿ Move</span>
     <button class="widget-close-btn" onclick="hideWidget('clock')">✕</button>
   </div>
-  <div class="fixed-widget-container">
-    <div class="widget">
-      <h3>Local Time</h3>
-      <div class="primary-display" id="time">--:--</div>
-      <div class="secondary-display" id="date">Loading...</div>
-    </div>
-    <div class="widget">
-      <h3>Weather (NYC)</h3>
-      <div class="primary-display">
-        <div id="weather-icon-container"></div>
-        <div id="temp">--°</div>
+
+  <!-- COMPACT -->
+  <div class="wsize-compact">
+    <div class="clock-compact-card" onclick="toggleWidgetSize('clock')">
+      <div class="cc-row1">
+        <span class="cc-time" id="cc-time">--:--</span>
+        <span class="cc-pipe">|</span>
+        <span class="cc-weather-inline">
+          <span id="cc-icon"></span>
+          <span class="cc-temp-inline" id="cc-temp">--°</span>
+        </span>
       </div>
-      <div class="secondary-display" id="weather-desc">Loading...</div>
+      <div class="cc-row2">
+        <span class="cc-date-inline" id="cc-date">--</span>
+        <span class="cc-desc-inline" id="cc-desc">--</span>
+      </div>
+      <div class="cc-expand-hint">click to expand</div>
+    </div>
+  </div>
+
+  <!-- EXPANDED -->
+  <div class="wsize-expanded">
+    <div class="fixed-widget-container">
+      <div class="widget">
+        <h3>Local Time</h3>
+        <div class="primary-display" id="time">--:--</div>
+        <div class="secondary-display" id="date">Loading...</div>
+      </div>
+      <div class="widget">
+        <h3>Weather (NYC)</h3>
+        <div class="primary-display">
+          <div id="weather-icon-container"></div>
+          <div id="temp">--°</div>
+        </div>
+        <div class="secondary-display" id="weather-desc">Loading...</div>
+        <div class="weather-extras">
+          <div class="weather-extra-item">
+            <div class="wex-label">Wind</div>
+            <div class="wex-val" id="wex-wind">--</div>
+          </div>
+          <div class="weather-extra-item">
+            <div class="wex-label">Humidity</div>
+            <div class="wex-val" id="wex-humidity">--</div>
+          </div>
+          <div class="weather-extra-item">
+            <div class="wex-label">Feels Like</div>
+            <div class="wex-val" id="wex-feels">--</div>
+          </div>
+          <div class="weather-extra-item">
+            <div class="wex-label">UV Index</div>
+            <div class="wex-val" id="wex-uv">--</div>
+          </div>
+        </div>
+      </div>
+      <div class="collapse-row">
+        <button class="collapse-btn" onclick="toggleWidgetSize('clock')">▲ Minimize</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ── Commercial Strip (bottom) ── -->
+<!-- ══ Commercial Strip ══ -->
 <div class="commercial-strip" id="commercial-strip">
   <div class="commercial-track" id="commercial-track"></div>
   <button class="commercial-edit-btn" onclick="openCommercialEditor()" title="Edit strip">✎</button>
 </div>
 
-<!-- ── Calendar Event Modal ── -->
+<!-- ══ Calendar Event Modal ══ -->
 <div class="modal-overlay" id="cal-modal">
   <div class="modal">
     <h2 id="cal-modal-title">Events</h2>
@@ -524,7 +530,7 @@
   </div>
 </div>
 
-<!-- ── Commercial Editor Modal ── -->
+<!-- ══ Commercial Editor Modal ══ -->
 <div class="modal-overlay" id="commercial-modal">
   <div class="modal">
     <h2>Edit Commercial Strip</h2>
@@ -534,7 +540,7 @@
     <div class="modal-form">
       <input type="text" id="new-comm-icon" placeholder="Emoji / icon (e.g. 🎉)" maxlength="4" />
       <input type="text" id="new-comm-text" placeholder="Main text" />
-      <input type="text" id="new-comm-tag" placeholder="Tag label (optional, e.g. NEW)" />
+      <input type="text" id="new-comm-tag"  placeholder="Tag label (optional, e.g. NEW)" />
     </div>
     <div class="modal-actions">
       <button class="modal-btn primary" onclick="addCommercialSection()">Add Section</button>
@@ -544,11 +550,13 @@
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    GLOBAL STATE
-══════════════════════════════════════════════════ */
-let calModalDay   = null;
-let calHolidays   = [];
+══════════════════════════════════════════════ */
+let calModalDay  = null;
+let calHolidays  = [];
+let weekOffset   = 0;
+let _didDrag     = false;
 
 const DEFAULT_COMMERCIAL = [
   { id: '1', icon: '🎓', text: 'Welcome to Monroe Community College', tag: 'NEWS' },
@@ -559,9 +567,22 @@ const DEFAULT_COMMERCIAL = [
 ];
 
 
-/* ══════════════════════════════════════════════════
-   WIDGET VISIBILITY & DRAGGING
-══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   WIDGET SIZE TOGGLE
+══════════════════════════════════════════════ */
+function toggleWidgetSize(name) {
+  if (_didDrag) return; // ignore if we were just dragging
+  const el = document.getElementById('widget-' + name);
+  if (!el) return;
+  const next = el.dataset.size === 'compact' ? 'expanded' : 'compact';
+  el.dataset.size = next;
+  localStorage.setItem('size_' + name, next);
+}
+
+
+/* ══════════════════════════════════════════════
+   WIDGET VISIBILITY
+══════════════════════════════════════════════ */
 function hideWidget(name) {
   const el = document.getElementById('widget-' + name);
   if (el) el.style.display = 'none';
@@ -593,33 +614,49 @@ function updateRestoreBar() {
   bar.classList.toggle('visible', hidden.length > 0);
 }
 
+
+/* ══════════════════════════════════════════════
+   DRAGGABLE
+══════════════════════════════════════════════ */
 function initDraggable(widgetId, handleId) {
   const el     = document.getElementById(widgetId);
   const handle = document.getElementById(handleId);
   if (!el || !handle) return;
 
-  // Restore saved position
+  // Always use top/left for stable positioning during size toggle
+  const rect  = el.getBoundingClientRect();
   const saved = JSON.parse(localStorage.getItem('pos_' + widgetId) || 'null');
   if (saved) {
     el.style.left = saved.left; el.style.top = saved.top;
-    el.style.right = ''; el.style.bottom = '';
+  } else {
+    el.style.left = rect.left + 'px'; el.style.top = rect.top + 'px';
   }
+  el.style.right = ''; el.style.bottom = '';
+
+  // Restore size
+  const savedSize = localStorage.getItem('size_' + widgetId.replace('widget-', ''));
+  if (savedSize) el.dataset.size = savedSize;
+
+  // Restore visibility
+  const hidden = JSON.parse(localStorage.getItem('hidden_widgets') || '[]');
+  if (hidden.includes(widgetId.replace('widget-', ''))) el.style.display = 'none';
 
   let startX, startY, startL, startT;
 
   handle.addEventListener('mousedown', e => {
     e.preventDefault();
+    _didDrag = false;
     const r = el.getBoundingClientRect();
     startX = e.clientX; startY = e.clientY;
-    startL = r.left; startT = r.top;
+    startL = r.left;    startT = r.top;
     el.style.left = startL + 'px'; el.style.top = startT + 'px';
-    el.style.right = ''; el.style.bottom = '';
     handle.classList.add('dragging');
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onUp);
   });
 
   function onMove(e) {
+    _didDrag = true;
     el.style.left = Math.max(0, startL + e.clientX - startX) + 'px';
     el.style.top  = Math.max(0, startT + e.clientY - startY) + 'px';
   }
@@ -628,17 +665,29 @@ function initDraggable(widgetId, handleId) {
     handle.classList.remove('dragging');
     document.removeEventListener('mousemove', onMove);
     document.removeEventListener('mouseup', onUp);
-    localStorage.setItem('pos_' + widgetId, JSON.stringify({ left: el.style.left, top: el.style.top }));
+    if (_didDrag) {
+      localStorage.setItem('pos_' + widgetId, JSON.stringify({ left: el.style.left, top: el.style.top }));
+      setTimeout(() => { _didDrag = false; }, 100);
+    }
   }
 }
 
 
-/* ══════════════════════════════════════════════════
-   CALENDAR MODAL
-══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   CALENDAR
+══════════════════════════════════════════════ */
+function calNav(delta) {
+  weekOffset += delta;
+  renderCalendar();
+}
+
+function calGoToday() {
+  weekOffset = 0;
+  renderCalendar();
+}
+
 function openCalModal(day, holidays) {
-  calModalDay  = day;
-  calHolidays  = holidays || [];
+  calModalDay = day; calHolidays = holidays || [];
   document.getElementById('cal-modal-title').textContent =
     day.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
   document.getElementById('new-event-title').value = '';
@@ -651,32 +700,24 @@ function openCalModal(day, holidays) {
 function renderCalModalEvents() {
   const container = document.getElementById('cal-modal-events');
   container.innerHTML = '';
-
   const dayHols   = calHolidays.filter(h => new Date(h.date).toDateString() === calModalDay.toDateString());
   const stored    = JSON.parse(localStorage.getItem('events') || '[]');
   const dayCustom = stored.filter(e => new Date(e.date).toDateString() === calModalDay.toDateString());
-
   if (!dayHols.length && !dayCustom.length) {
     container.innerHTML = '<div style="color:rgba(255,255,255,.38);font-size:13px;padding:8px 0;">No events for this day.</div>';
     return;
   }
-
   dayHols.forEach(h => {
     const item = document.createElement('div');
     item.className = 'modal-event-item';
     item.innerHTML = `<div class="ev-info"><div class="ev-name">${h.localName}</div><div class="ev-time">Public Holiday</div></div>`;
     container.appendChild(item);
   });
-
   dayCustom.forEach(ev => {
     const item = document.createElement('div');
     item.className = 'modal-event-item';
-    const timeStr = [ev.time, ev.meta].filter(Boolean).join(' · ');
-    item.innerHTML = `
-      <div class="ev-info">
-        <div class="ev-name">${ev.title}</div>
-        ${timeStr ? `<div class="ev-time">${timeStr}</div>` : ''}
-      </div>
+    const ts = [ev.time, ev.meta].filter(Boolean).join(' · ');
+    item.innerHTML = `<div class="ev-info"><div class="ev-name">${ev.title}</div>${ts ? `<div class="ev-time">${ts}</div>` : ''}</div>
       <button class="modal-delete-btn" onclick="deleteCalEvent('${ev.id}')">Remove</button>`;
     container.appendChild(item);
   });
@@ -709,60 +750,40 @@ function closeModal(id) {
 }
 
 
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    COMMERCIAL STRIP
-══════════════════════════════════════════════════ */
+══════════════════════════════════════════════ */
 function getCommercialSections() {
   const s = localStorage.getItem('commercial_sections');
   return s ? JSON.parse(s) : DEFAULT_COMMERCIAL;
 }
-
-function saveCommercialSections(sections) {
-  localStorage.setItem('commercial_sections', JSON.stringify(sections));
-}
+function saveCommercialSections(s) { localStorage.setItem('commercial_sections', JSON.stringify(s)); }
 
 function renderCommercialStrip() {
-  const track    = document.getElementById('commercial-track');
-  const sections = getCommercialSections();
-  if (!sections.length) { track.innerHTML = ''; return; }
-
-  function buildHTML() {
-    return sections.map(s => `
-      <div class="commercial-section">
-        ${s.icon ? `<span class="sect-icon">${s.icon}</span>` : ''}
-        <span class="sect-text">${s.text}</span>
-        ${s.tag ? `<span class="sect-tag">${s.tag}</span>` : ''}
-      </div>`).join('');
-  }
-
-  track.innerHTML = buildHTML() + buildHTML(); // double for seamless loop
-  const dur = Math.max(18, sections.length * 7);
-  track.style.animationDuration = dur + 's';
+  const track = document.getElementById('commercial-track');
+  const secs  = getCommercialSections();
+  if (!secs.length) { track.innerHTML = ''; return; }
+  const build = () => secs.map(s => `
+    <div class="commercial-section">
+      ${s.icon ? `<span class="sect-icon">${s.icon}</span>` : ''}
+      <span class="sect-text">${s.text}</span>
+      ${s.tag ? `<span class="sect-tag">${s.tag}</span>` : ''}
+    </div>`).join('');
+  track.innerHTML = build() + build();
+  track.style.animationDuration = Math.max(18, secs.length * 7) + 's';
 }
 
-function openCommercialEditor() {
-  renderCommercialSectionsList();
-  document.getElementById('commercial-modal').classList.add('open');
-}
+function openCommercialEditor() { renderCommercialSectionsList(); document.getElementById('commercial-modal').classList.add('open'); }
 
 function renderCommercialSectionsList() {
   const container = document.getElementById('commercial-sections-list');
-  const sections  = getCommercialSections();
+  const secs = getCommercialSections();
   container.innerHTML = '';
-
-  if (!sections.length) {
-    container.innerHTML = '<div style="color:rgba(255,255,255,.38);font-size:13px;padding:8px 0;">No sections yet.</div>';
-    return;
-  }
-
-  sections.forEach(s => {
+  if (!secs.length) { container.innerHTML = '<div style="color:rgba(255,255,255,.38);font-size:13px;padding:8px 0;">No sections yet.</div>'; return; }
+  secs.forEach(s => {
     const item = document.createElement('div');
     item.className = 'modal-event-item';
-    item.innerHTML = `
-      <div class="ev-info">
-        <div class="ev-name">${s.icon || ''} ${s.text}</div>
-        ${s.tag ? `<div class="ev-time">Tag: ${s.tag}</div>` : ''}
-      </div>
+    item.innerHTML = `<div class="ev-info"><div class="ev-name">${s.icon||''} ${s.text}</div>${s.tag?`<div class="ev-time">Tag: ${s.tag}</div>`:''}</div>
       <button class="modal-delete-btn" onclick="deleteCommercialSection('${s.id}')">Remove</button>`;
     container.appendChild(item);
   });
@@ -773,9 +794,9 @@ function addCommercialSection() {
   const text = document.getElementById('new-comm-text').value.trim();
   const tag  = document.getElementById('new-comm-tag').value.trim().toUpperCase();
   if (!text) return;
-  const sections = getCommercialSections();
-  sections.push({ id: Date.now().toString(), icon, text, tag });
-  saveCommercialSections(sections);
+  const secs = getCommercialSections();
+  secs.push({ id: Date.now().toString(), icon, text, tag });
+  saveCommercialSections(secs);
   document.getElementById('new-comm-icon').value = '';
   document.getElementById('new-comm-text').value = '';
   document.getElementById('new-comm-tag').value  = '';
@@ -784,22 +805,26 @@ function addCommercialSection() {
 }
 
 function deleteCommercialSection(id) {
-  const sections = getCommercialSections().filter(s => s.id !== id);
-  saveCommercialSections(sections);
+  saveCommercialSections(getCommercialSections().filter(s => s.id !== id));
   renderCommercialSectionsList();
   renderCommercialStrip();
 }
 
 
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    INIT
-══════════════════════════════════════════════════ */
+══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* Close modals on overlay click */
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+  /* Modal overlay close */
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
   });
+
+  /* Draggable widgets */
+  initDraggable('widget-events', 'handle-events');
+  initDraggable('widget-clock',  'handle-clock');
+  updateRestoreBar();
 
   /* ── Media Carousel ── */
   const carousel = document.getElementById('carousel-container');
@@ -808,63 +833,76 @@ document.addEventListener('DOMContentLoaded', () => {
     { type: 'image', src: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2670&auto=format&fit=crop' },
   ];
   let idx = 0, cur = null;
-
   function showNextMedia() {
     const m = playlist[idx];
     let el;
     if (m.type === 'video') {
-      el = document.createElement('video');
-      el.src = m.src; el.autoplay = true; el.muted = true; el.loop = true; el.playsInline = true;
+      el = document.createElement('video'); el.src = m.src; el.autoplay = true; el.muted = true; el.loop = true; el.playsInline = true;
     } else {
       el = document.createElement('img'); el.src = m.src; el.alt = '';
     }
     el.className = 'media-layer';
-    carousel.appendChild(el);
-    void el.offsetWidth;
-    el.classList.add('active');
+    carousel.appendChild(el); void el.offsetWidth; el.classList.add('active');
     if (cur) { const old = cur; old.classList.remove('active'); setTimeout(() => old.remove(), 1500); }
-    cur = el;
-    idx = (idx + 1) % playlist.length;
+    cur = el; idx = (idx + 1) % playlist.length;
   }
-  showNextMedia();
-  setInterval(showNextMedia, 8000);
-
+  showNextMedia(); setInterval(showNextMedia, 8000);
 
   /* ── Clock ── */
   function updateTime() {
     const now = new Date();
-    document.getElementById('time').textContent =
-      now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('date').textContent =
-      now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    const t = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+    const d = now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    document.getElementById('time').textContent   = t;
+    document.getElementById('date').textContent   = d;
+    document.getElementById('cc-time').textContent = t;
+    document.getElementById('cc-date').textContent = d;
   }
-  updateTime();
-  setInterval(updateTime, 1000);
-
+  updateTime(); setInterval(updateTime, 1000);
 
   /* ── Weather ── */
   async function fetchWeather() {
     try {
-      const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true');
+      const url = 'https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060' +
+                  '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,uv_index' +
+                  '&wind_speed_unit=mph&timezone=America%2FNew_York';
+      const r = await fetch(url);
       if (!r.ok) return;
       const d = await r.json();
-      const temp = Math.round(d.current_weather.temperature);
-      const code = d.current_weather.weathercode;
-      document.getElementById('temp').textContent = `${temp}°C`;
-      document.getElementById('weather-desc').textContent = weatherDesc(code);
-      document.getElementById('weather-icon-container').innerHTML = weatherSVG(code);
+      const c = d.current;
+      const temp   = Math.round(c.temperature_2m);
+      const feels  = Math.round(c.apparent_temperature);
+      const humid  = Math.round(c.relative_humidity_2m);
+      const wind   = Math.round(c.wind_speed_10m);
+      const uv     = c.uv_index !== undefined ? c.uv_index.toFixed(1) : '--';
+      const code   = c.weather_code;
+      const desc   = weatherDesc(code);
+      const svg    = weatherSVG(code);
+      const svgSm  = weatherSVGSmall(code);
+
+      document.getElementById('temp').textContent          = `${temp}°C`;
+      document.getElementById('weather-desc').textContent  = desc;
+      document.getElementById('weather-icon-container').innerHTML = svg;
+      document.getElementById('wex-wind').textContent      = `${wind} mph`;
+      document.getElementById('wex-humidity').textContent  = `${humid}%`;
+      document.getElementById('wex-feels').textContent     = `${feels}°C`;
+      document.getElementById('wex-uv').textContent        = uv;
+
+      document.getElementById('cc-temp').textContent  = `${temp}°C`;
+      document.getElementById('cc-desc').textContent  = desc;
+      document.getElementById('cc-icon').innerHTML    = svgSm;
     } catch(e) { console.error(e); }
   }
 
   function weatherDesc(c) {
-    if (c === 0) return 'Clear sky';
-    if (c <= 3)  return 'Partly cloudy';
-    if (c >= 45 && c <= 48) return 'Foggy';
-    if (c >= 51 && c <= 67) return 'Rain';
-    if (c >= 71 && c <= 77) return 'Snow';
-    if (c >= 80 && c <= 82) return 'Showers';
-    if (c >= 95) return 'Thunderstorm';
-    return 'Unknown';
+    if (c === 0)              return 'Clear sky';
+    if (c <= 3)               return 'Partly cloudy';
+    if (c >= 45 && c <= 48)  return 'Foggy';
+    if (c >= 51 && c <= 67)  return 'Rain';
+    if (c >= 71 && c <= 77)  return 'Snow';
+    if (c >= 80 && c <= 82)  return 'Showers';
+    if (c >= 95)              return 'Thunderstorm';
+    return 'Cloudy';
   }
 
   function weatherSVG(c) {
@@ -883,13 +921,14 @@ document.addEventListener('DOMContentLoaded', () => {
     return cloud;
   }
 
-  fetchWeather();
-  setInterval(fetchWeather, 1800000);
+  function weatherSVGSmall(c) {
+    // same icons but with cc-icon-sm class
+    return weatherSVG(c).replace('class="weather-icon-svg"', 'class="cc-icon-sm"');
+  }
 
+  fetchWeather(); setInterval(fetchWeather, 1800000);
 
-  /* ── Weekly Calendar ── */
-  let _holidays = [];
-
+  /* ── Calendar ── */
   async function renderCalendar() {
     const weekEl  = document.getElementById('cal-week');
     const rangeEl = document.getElementById('cal-week-range');
@@ -897,45 +936,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const today = new Date();
     const start = new Date(today);
-    start.setDate(today.getDate() - today.getDay());
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6);
+    start.setDate(today.getDate() - today.getDay() + weekOffset * 7);
+    const end = new Date(start); end.setDate(start.getDate() + 6);
 
     const fmt = d => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     rangeEl.textContent = `${fmt(start)} – ${fmt(end)}`;
 
-    if (!_holidays.length) {
+    if (!calHolidays.length) {
       try {
         const r = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${today.getFullYear()}/US`);
-        if (r.ok) _holidays = await r.json();
+        if (r.ok) calHolidays = await r.json();
       } catch(e) {}
     }
 
     const stored = JSON.parse(localStorage.getItem('events') || '[]');
 
     for (let i = 0; i < 7; i++) {
-      const day = new Date(start);
-      day.setDate(start.getDate() + i);
+      const day = new Date(start); day.setDate(start.getDate() + i);
       const isToday = day.toDateString() === today.toDateString();
 
       const dayEl = document.createElement('div');
       dayEl.className = 'cal-day' + (isToday ? ' today' : '');
-
-      dayEl.addEventListener('click', () => openCalModal(day, _holidays));
+      dayEl.addEventListener('click', () => openCalModal(day, calHolidays));
 
       const hdr = document.createElement('div');
       hdr.className = 'cal-day-header';
       hdr.textContent = day.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' });
       dayEl.appendChild(hdr);
 
-      const dayHolidays = _holidays.filter(h => new Date(h.date).toDateString() === day.toDateString());
-      const dayCustom   = stored.filter(e => new Date(e.date).toDateString() === day.toDateString());
-      const all = [...dayHolidays, ...dayCustom];
+      const dayHols   = calHolidays.filter(h => new Date(h.date).toDateString() === day.toDateString());
+      const dayCustom = stored.filter(e => new Date(e.date).toDateString() === day.toDateString());
+      const all = [...dayHols, ...dayCustom];
 
       if (!all.length) {
         const none = document.createElement('div');
-        none.className = 'cal-no-event';
-        none.textContent = '—';
+        none.className = 'cal-no-event'; none.textContent = '—';
         dayEl.appendChild(none);
       } else {
         all.forEach(ev => {
@@ -945,7 +980,6 @@ document.addEventListener('DOMContentLoaded', () => {
           dayEl.appendChild(evEl);
         });
       }
-
       weekEl.appendChild(dayEl);
     }
   }
@@ -953,24 +987,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCalendar();
   window._renderCalendar = renderCalendar;
 
+  /* Calendar mouse wheel navigation */
+  document.getElementById('center-calendar').addEventListener('wheel', e => {
+    e.preventDefault();
+    weekOffset += e.deltaY > 0 ? 1 : -1;
+    renderCalendar();
+  }, { passive: false });
 
-  /* ── Draggable widgets ── */
-  initDraggable('widget-events', 'handle-events');
-  initDraggable('widget-clock',  'handle-clock');
-
-  // Restore hidden state
-  const hidden = JSON.parse(localStorage.getItem('hidden_widgets') || '[]');
-  hidden.forEach(name => {
-    const el = document.getElementById('widget-' + name);
-    if (el) el.style.display = 'none';
-  });
-  updateRestoreBar();
-
-
-  /* ── Commercial strip ── */
+  /* Commercial strip */
   renderCommercialStrip();
 });
 </script>
-
 </body>
 </html>
