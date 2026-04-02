@@ -678,12 +678,12 @@ function initDraggable(widgetId, handleId) {
 ══════════════════════════════════════════════ */
 function calNav(delta) {
   weekOffset += delta;
-  renderCalendar();
+  if (window._renderCalendar) window._renderCalendar();
 }
 
 function calGoToday() {
   weekOffset = 0;
-  renderCalendar();
+  if (window._renderCalendar) window._renderCalendar();
 }
 
 function openCalModal(day, holidays) {
