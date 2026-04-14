@@ -16,9 +16,70 @@ const DEFAULT_MODE = 'campus';
 let calModalDay  = null;
 let calHolidays  = [];
 let weekOffset   = 0;
+let evDayOffset  = 0;
 let _didDrag     = false;
 
 const DEFAULT_COMMERCIAL = [];
+
+
+/* ══════════════════════════════════════════════
+   EVENT DATE HELPERS
+══════════════════════════════════════════════ */
+function parseEventDate(str) {
+  if (!str) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  if (str === 'Today') return new Date(today);
+  if (str === 'Tomorrow') { const d = new Date(today); d.setDate(d.getDate()+1); return d; }
+  const d = new Date(str + ' ' + today.getFullYear());
+  if (!isNaN(d.getTime())) { d.setHours(0,0,0,0); return d; }
+  return null;
+}
+
+function getDayLabel(offset) {
+  if (offset === 0) return 'Today';
+  if (offset === 1) return 'Tomorrow';
+  if (offset === -1) return 'Yesterday';
+  const d = new Date(); d.setDate(d.getDate() + offset);
+  return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+function renderEventsWidget(allEvents) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const target = new Date(today); target.setDate(today.getDate() + evDayOffset);
+
+  const dayEvents = allEvents.filter(ev => {
+    const d = parseEventDate(ev.date);
+    return d && d.toDateString() === target.toDateString();
+  });
+
+  const label = getDayLabel(evDayOffset);
+  const ecbDayLabel = document.getElementById('ecb-day-label');
+  const evDayLabelEl = document.getElementById('ev-day-label');
+  if (ecbDayLabel) ecbDayLabel.textContent = label;
+  if (evDayLabelEl) evDayLabelEl.textContent = label;
+
+  const ecbCount = document.getElementById('ecb-count');
+  const ecbNext  = document.getElementById('ecb-next');
+  if (ecbCount) ecbCount.textContent = dayEvents.length;
+  if (ecbNext)  ecbNext.textContent  = dayEvents.length ? dayEvents[0].name : 'No events';
+
+  const eventsList = document.getElementById('events-list');
+  if (!eventsList) return;
+  if (!dayEvents.length) {
+    eventsList.innerHTML = '<div style="color:rgba(0,0,0,.45);font-size:13px;padding:12px 0 4px;text-align:center;">No events for this day.</div>';
+    return;
+  }
+  eventsList.innerHTML = dayEvents.map(ev => `
+    <div class="ev-row">
+      <div class="col-left"><div class="dow">${ev.dow}</div><div class="time">${ev.time}</div></div>
+      <div class="col-right"><div class="date">${ev.date}</div><div class="name">${ev.name}</div><div class="meta">${ev.meta || ''}</div></div>
+    </div>`).join('');
+}
+
+function shiftEvDay(delta) {
+  evDayOffset += delta;
+  renderEventsWidget(window._facilityEvents || []);
+}
 
 
 /* ══════════════════════════════════════════════
@@ -276,7 +337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const mode     = MODES[modeName] || MODES[DEFAULT_MODE];
 
   /* Apply mode: titles (compact badge + expanded shield) */
-  const ecbTitle = document.querySelector('.ecb-title');
+  const ecbTitle = document.getElementById('ecb-title-label');
   if (ecbTitle) ecbTitle.textContent = mode.eventsTitle;
   const expandedTitle = document.querySelector('.event-module .title');
   if (expandedTitle) expandedTitle.textContent = mode.eventsTitle;
@@ -303,15 +364,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     ? stripData.filter(s => s.tags && s.tags.includes(tagFilter))
     : stripData;
 
-  /* Populate events list in expanded widget */
-  const eventsList = document.getElementById('events-list');
-  if (eventsList && filteredEvents.length) {
-    eventsList.innerHTML = filteredEvents.map(ev => `
-      <div class="ev-row">
-        <div class="col-left"><div class="dow">${ev.dow}</div><div class="time">${ev.time}</div></div>
-        <div class="col-right"><div class="date">${ev.date}</div><div class="name">${ev.name}</div><div class="meta">${ev.meta || ''}</div></div>
-      </div>`).join('');
-  }
+  /* Store facility events globally and render day view */
+  window._facilityEvents = filteredEvents;
+  renderEventsWidget(filteredEvents);
 
   /* Modal overlay close */
   document.querySelectorAll('.modal-overlay').forEach(o => {
@@ -458,22 +513,38 @@ document.addEventListener('DOMContentLoaded', async () => {
       hdr.textContent = day.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric' });
       dayEl.appendChild(hdr);
 
-      const dayHols   = calHolidays.filter(h => new Date(h.date).toDateString() === day.toDateString());
-      const dayCustom = stored.filter(e => new Date(e.date).toDateString() === day.toDateString());
-      const all = [...dayHols, ...dayCustom];
+      const dayHols     = calHolidays.filter(h => new Date(h.date).toDateString() === day.toDateString());
+      const dayCustom   = stored.filter(e => new Date(e.date).toDateString() === day.toDateString());
+      const dayFacility = (window._facilityEvents || []).filter(ev => {
+        const d = parseEventDate(ev.date);
+        return d && d.toDateString() === day.toDateString();
+      });
 
-      if (!all.length) {
+      const hasAny = dayHols.length || dayCustom.length || dayFacility.length;
+      if (!hasAny) {
         const none = document.createElement('div');
         none.className = 'cal-no-event'; none.textContent = '—';
         dayEl.appendChild(none);
       } else {
-        all.forEach(ev => {
+        dayHols.forEach(ev => {
           const evEl = document.createElement('div');
           evEl.className = 'cal-event';
+          evEl.textContent = ev.localName;
+          dayEl.appendChild(evEl);
+        });
+        dayCustom.forEach(ev => {
+          const evEl = document.createElement('div');
+          evEl.className = 'cal-event';
+          evEl.textContent = ev.title;
+          dayEl.appendChild(evEl);
+        });
+        dayFacility.forEach(ev => {
+          const evEl = document.createElement('div');
+          evEl.className = 'cal-event cal-event-facility';
           if (ev.image) {
-            evEl.innerHTML = `<img class="cal-event-img" src="${ev.image}" alt="${ev.name||ev.localName||''}"><div>${ev.name||ev.localName||''}</div>`;
+            evEl.innerHTML = `<img class="cal-event-img" src="${ev.image}" alt="${ev.name}"><div>${ev.name}</div>`;
           } else {
-            evEl.textContent = ev.localName || ev.title || ev.name;
+            evEl.textContent = (ev.time ? ev.time + ' ' : '') + ev.name;
           }
           dayEl.appendChild(evEl);
         });

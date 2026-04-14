@@ -24,10 +24,15 @@
     <div class="events-compact-badge" onclick="toggleWidgetSize('events')">
       <div class="ecb-icon">📅</div>
       <div class="ecb-body">
-        <div class="ecb-title">Upcoming Events</div>
-        <div class="ecb-next" id="ecb-next">MCC Board of Trustees Executive Session</div>
+        <div class="ecb-title" id="ecb-title-label">Upcoming Events</div>
+        <div class="ecb-day-nav">
+          <button class="ecb-day-btn" onclick="shiftEvDay(-1); event.stopPropagation()">‹</button>
+          <span class="ecb-day-label" id="ecb-day-label">Today</span>
+          <button class="ecb-day-btn" onclick="shiftEvDay(1); event.stopPropagation()">›</button>
+        </div>
+        <div class="ecb-next" id="ecb-next">Loading...</div>
       </div>
-      <div class="ecb-count" id="ecb-count">3</div>
+      <div class="ecb-count" id="ecb-count">0</div>
     </div>
   </div>
 
@@ -39,6 +44,11 @@
         <section class="card">
           <div class="title-row">
             <div class="title">Upcoming Events</div>
+            <div class="ev-day-nav">
+              <button class="ev-day-btn" onclick="shiftEvDay(-1)">‹</button>
+              <span class="ev-day-label" id="ev-day-label">Today</span>
+              <button class="ev-day-btn" onclick="shiftEvDay(1)">›</button>
+            </div>
             <button class="events-collapse-btn" onclick="toggleWidgetSize('events')">▲ Minimize</button>
           </div>
           <div id="events-list">
