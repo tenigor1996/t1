@@ -1,7 +1,12 @@
 [
-  { "id": "1", "icon": "🎓", "text": "Welcome to UMass Boston", "tags": ["general"] },
-  { "id": "2", "icon": "📅", "text": "Spring 2025 Registration Now Open", "tags": ["academic", "register"] },
-  { "id": "3", "icon": "🏆", "text": "UMass Boston Athletics", "tags": ["sports"] },
-  { "id": "4", "icon": "📢", "text": "Campus Events Every Week", "tags": ["general", "events"] },
-  { "id": "5", "icon": "🌐", "text": "Online & Hybrid Courses Available", "tags": ["academic", "online"] }
+  { "id": "1", "icon": "🎓", "text": "Welcome to UMass Boston — The Hub of Student Life", "tags": ["general"] },
+  { "id": "2", "icon": "🏢", "text": "Campus Center — 100 Morrissey Blvd · Mon–Fri 6AM–11:30PM · Sat–Sun 7AM–10PM", "tags": ["hours", "info"] },
+  { "id": "3", "icon": "ℹ️", "text": "One Stop Student Services — Comprehensive resources all in one place", "tags": ["services", "academic"] },
+  { "id": "4", "icon": "📞", "text": "Campus Center: 617.287.5000 · Event Services: 617.287.5000", "tags": ["contact", "info"] },
+  { "id": "5", "icon": "🏋️", "text": "Beacon Fitness Center — McCormack Hall 1st Floor · 617.287.6786", "tags": ["fitness", "info"] },
+  { "id": "6", "icon": "🎉", "text": "Event Spaces Available — Ballrooms, Auditoriums, Classrooms, Outdoor Areas", "tags": ["events", "venue"] },
+  { "id": "7", "icon": "🎮", "text": "Game Room — Mon–Fri 10AM–8PM · Campus Center", "tags": ["recreation", "info"] },
+  { "id": "8", "icon": "🏆", "text": "Beacon Bench Competition — May 1, 1–3 PM · Beacon Fitness Center", "tags": ["event", "fitness"] },
+  { "id": "9", "icon": "🧘", "text": "Group Fitness Classes — Free with membership · Spring schedule ends May 15", "tags": ["fitness", "wellness"] },
+  { "id": "10", "icon": "📅", "text": "Spring 2026 — Group Fitness runs Jan 26 – May 15 · No classes Apr 20", "tags": ["info", "academic"] }
 ]

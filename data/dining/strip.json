@@ -1,7 +1,10 @@
 [
-  { "id": "1", "icon": "🍳", "text": "Breakfast — 7:00 AM to 10:30 AM", "tags": ["hours", "breakfast"] },
-  { "id": "2", "icon": "🥗", "text": "Lunch — 11:00 AM to 2:30 PM", "tags": ["hours", "lunch"] },
-  { "id": "3", "icon": "🍽️", "text": "Dinner — 5:00 PM to 8:00 PM", "tags": ["hours", "dinner"] },
-  { "id": "4", "icon": "☕", "text": "Coffee Bar Open All Day", "tags": ["info"] },
-  { "id": "5", "icon": "🥤", "text": "Smoothie Station Available at Lunch", "tags": ["info", "lunch"] }
+  { "id": "1", "icon": "🍽️", "text": "Campus Center Food Court — Something for everyone!", "tags": ["info"] },
+  { "id": "2", "icon": "🏢", "text": "Campus Center Hours — Mon–Fri 6AM–11:30PM · Sat–Sun 7AM–10PM", "tags": ["hours", "info"] },
+  { "id": "3", "icon": "☕", "text": "Dunkin' — Now open in the Campus Center · Liquid hustle!", "tags": ["coffee", "dunkin"] },
+  { "id": "4", "icon": "📱", "text": "Mobile Ordering — Order ahead via the Everyday app · Skip the line!", "tags": ["info", "app"] },
+  { "id": "5", "icon": "🥗", "text": "Food Court — Quick dining between classes · Multiple options available", "tags": ["info", "food"] },
+  { "id": "6", "icon": "ℹ️", "text": "Information Desk — Mon–Thu 7:30AM–8PM · Fri 7:30AM–5PM · Sat 9AM–2PM", "tags": ["info", "hours"] },
+  { "id": "7", "icon": "🎮", "text": "Game Room — Mon–Fri 10AM–8PM · Campus Center", "tags": ["info", "recreation"] },
+  { "id": "8", "icon": "📍", "text": "Campus Center — 100 Morrissey Blvd, Boston MA · 617.287.5000", "tags": ["info", "contact"] }
 ]

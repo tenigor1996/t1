@@ -1,7 +1,19 @@
 [
-  { "dow": "Mon.", "time": "6:00 AM", "date": "Today", "name": "Morning Yoga", "meta": "Studio A", "tags": ["yoga", "morning"] },
-  { "dow": "Mon.", "time": "8:00 AM", "date": "Today", "name": "Spinning Class", "meta": "Cycling Room", "tags": ["cycling", "cardio"] },
-  { "dow": "Mon.", "time": "12:00 PM", "date": "Today", "name": "Abs & Core", "meta": "Studio B", "tags": ["strength", "core"] },
-  { "dow": "Tue.", "time": "6:30 PM", "date": "Tomorrow", "name": "Cardio Bootcamp", "meta": "Main Floor", "tags": ["cardio", "bootcamp"] },
-  { "dow": "Wed.", "time": "7:00 AM", "date": "Apr 9", "name": "Morning Yoga", "meta": "Studio A", "tags": ["yoga", "morning"] }
+  { "dow": "Mon.", "time": "11:00 AM", "date": "Today", "name": "Vinyasa Flow", "meta": "Bella · Multi Purpose Room", "tags": ["yoga", "monday"] },
+  { "dow": "Mon.", "time": "12:15 PM", "date": "Today", "name": "Spin Express", "meta": "Iván · Cycling Studio", "tags": ["cycling", "cardio", "monday"] },
+  { "dow": "Mon.", "time": "3:00 PM", "date": "Today", "name": "Vinyasa Flow", "meta": "Jyoti · Multi Purpose Room", "tags": ["yoga", "monday"] },
+  { "dow": "Mon.", "time": "5:00 PM", "date": "Today", "name": "Mat Pilates", "meta": "Alyssa · Multi Purpose Room", "tags": ["pilates", "monday"] },
+  { "dow": "Tue.", "time": "12:15 PM", "date": "Tomorrow", "name": "Total Body", "meta": "Sarah · Multi Purpose Room", "tags": ["strength", "tuesday"] },
+  { "dow": "Tue.", "time": "3:00 PM", "date": "Tomorrow", "name": "Stretch Fit", "meta": "Tupaq · Multi Purpose Room", "tags": ["stretch", "tuesday"] },
+  { "dow": "Tue.", "time": "5:00 PM", "date": "Tomorrow", "name": "Hatha Yoga", "meta": "Mike · Multi Purpose Room", "tags": ["yoga", "tuesday"] },
+  { "dow": "Wed.", "time": "7:00 AM", "date": "Apr 16", "name": "Vinyasa Flow", "meta": "Bella · Multi Purpose Room", "tags": ["yoga", "morning", "wednesday"] },
+  { "dow": "Wed.", "time": "12:15 PM", "date": "Apr 16", "name": "Hatha Yoga", "meta": "Jyoti · Multi Purpose Room", "tags": ["yoga", "wednesday"] },
+  { "dow": "Wed.", "time": "4:00 PM", "date": "Apr 16", "name": "All Levels Vinyasa", "meta": "Maria · Multi Purpose Room", "tags": ["yoga", "wednesday"] },
+  { "dow": "Wed.", "time": "5:30 PM", "date": "Apr 16", "name": "Mat Pilates", "meta": "Alyssa · Multi Purpose Room", "tags": ["pilates", "wednesday"] },
+  { "dow": "Thu.", "time": "4:00 PM", "date": "Apr 17", "name": "Hatha Yoga", "meta": "Mike · Multi Purpose Room", "tags": ["yoga", "thursday"] },
+  { "dow": "Thu.", "time": "5:00 PM", "date": "Apr 17", "name": "Spin", "meta": "Iván · Cycling Studio", "tags": ["cycling", "cardio", "thursday"] },
+  { "dow": "Thu.", "time": "6:00 PM", "date": "Apr 17", "name": "Mat Pilates", "meta": "Alyssa · Multi Purpose Room", "tags": ["pilates", "thursday"] },
+  { "dow": "Fri.", "time": "11:00 AM", "date": "Apr 18", "name": "Vinyasa Flow", "meta": "Jyoti · Multi Purpose Room", "tags": ["yoga", "friday"] },
+  { "dow": "Thu.", "time": "1:00 PM", "date": "May 1", "name": "Beacon Bench Competition", "meta": "Beacon Fitness Center · Win UMB Rec swag!", "tags": ["event", "competition"] },
+  { "dow": "Sun.", "time": "4:00 PM", "date": "May 4", "name": "Meditation 101", "meta": "Maria · Venture Development Center, Phyllis Wheatley Hall 3rd Fl", "tags": ["event", "meditation", "wellness"] }
 ]

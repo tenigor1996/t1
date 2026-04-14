@@ -1,6 +1,12 @@
 [
-  { "dow": "Mon.", "time": "10:00 AM", "date": "Today", "name": "Career Fair", "meta": "Campus Center, 2nd Floor", "tags": ["academic", "career"] },
-  { "dow": "Mon.", "time": "2:00 PM", "date": "Today", "name": "CS410 Project Demo", "meta": "McCormack Hall 117", "tags": ["academic", "cs"] },
-  { "dow": "Tue.", "time": "12:00 PM", "date": "Tomorrow", "name": "Student Government Meeting", "meta": "University Hall", "tags": ["student", "government"] },
-  { "dow": "Wed.", "time": "6:00 PM", "date": "Apr 9", "name": "Film Screening Night", "meta": "Clark Athletic Center", "tags": ["entertainment", "film"] }
+  { "dow": "Mon.", "time": "7:30 AM", "date": "Today", "name": "Information Desk Opens", "meta": "Campus Center · Mon–Thu 7:30AM–8PM", "tags": ["info", "services"] },
+  { "dow": "Mon.", "time": "10:00 AM", "date": "Today", "name": "One Stop Student Services", "meta": "Campus Center · Comprehensive student resources", "tags": ["services", "academic"] },
+  { "dow": "Mon.", "time": "11:00 AM", "date": "Today", "name": "Vinyasa Flow", "meta": "Beacon Fitness · Bella · Multi Purpose Room", "tags": ["fitness", "wellness"] },
+  { "dow": "Mon.", "time": "12:15 PM", "date": "Today", "name": "Spin Express", "meta": "Beacon Fitness · Iván · Cycling Studio", "tags": ["fitness", "cycling"] },
+  { "dow": "Tue.", "time": "12:15 PM", "date": "Tomorrow", "name": "Total Body Fitness", "meta": "Beacon Fitness · Sarah · Multi Purpose Room", "tags": ["fitness", "strength"] },
+  { "dow": "Wed.", "time": "7:00 AM", "date": "Apr 16", "name": "Early Vinyasa Flow", "meta": "Beacon Fitness · Bella · Multi Purpose Room", "tags": ["fitness", "yoga", "morning"] },
+  { "dow": "Wed.", "time": "4:00 PM", "date": "Apr 16", "name": "All Levels Vinyasa", "meta": "Beacon Fitness · Maria · Multi Purpose Room", "tags": ["fitness", "yoga"] },
+  { "dow": "Thu.", "time": "5:00 PM", "date": "Apr 17", "name": "Spin Class", "meta": "Beacon Fitness · Iván · Cycling Studio", "tags": ["fitness", "cycling"] },
+  { "dow": "Thu.", "time": "1:00 PM", "date": "May 1", "name": "Beacon Bench Competition", "meta": "Beacon Fitness Center · Win UMB Rec swag!", "tags": ["event", "fitness", "competition"] },
+  { "dow": "Sun.", "time": "4:00 PM", "date": "May 4", "name": "Meditation 101", "meta": "Phyllis Wheatley Hall, 3rd Floor · Also on Zoom", "tags": ["event", "wellness", "meditation"] }
 ]

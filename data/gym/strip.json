@@ -1,7 +1,12 @@
 [
-  { "id": "1", "icon": "🏋️", "text": "Fitness Center — Open 6AM to 10PM", "tags": ["info"] },
-  { "id": "2", "icon": "🧘", "text": "Yoga Class — Mon & Wed 7:00 AM", "tags": ["yoga", "class"] },
-  { "id": "3", "icon": "🏃", "text": "Cardio Bootcamp — Tue & Thu 6:30 PM", "tags": ["cardio", "class"] },
-  { "id": "4", "icon": "💪", "text": "Personal Training Available — Book at Front Desk", "tags": ["info"] },
-  { "id": "5", "icon": "🚿", "text": "Locker Rooms & Showers Available", "tags": ["info"] }
+  { "id": "1", "icon": "🏋️", "text": "Beacon Fitness Center — McCormack Hall, 1st Floor", "tags": ["info"] },
+  { "id": "2", "icon": "📞", "text": "Fitness Center: 617.287.6786 · fitness@umb.edu", "tags": ["info", "contact"] },
+  { "id": "3", "icon": "🧘", "text": "Group Fitness Classes — Free with membership · Advance registration recommended", "tags": ["classes", "info"] },
+  { "id": "4", "icon": "🚴", "text": "Spin Express — Mon 12:15 PM & Thu 5:00 PM · Cycling Studio · Iván", "tags": ["cycling", "class"] },
+  { "id": "5", "icon": "🏄", "text": "Vinyasa Flow — Mon 11AM & 3PM · Wed 7AM & 4PM · Fri 11AM", "tags": ["yoga", "class"] },
+  { "id": "6", "icon": "🤸", "text": "Mat Pilates — Mon 5PM · Wed 5:30PM · Thu 6PM · Alyssa", "tags": ["pilates", "class"] },
+  { "id": "7", "icon": "💪", "text": "Personal Training — Free Consultation · Sessions from $30 · Book online", "tags": ["training", "info"] },
+  { "id": "8", "icon": "🏆", "text": "Beacon Bench Competition — May 1, 1–3 PM · Win exclusive UMB Rec swag!", "tags": ["event", "competition"] },
+  { "id": "9", "icon": "🧠", "text": "Meditation 101 — May 4, 4–4:30 PM · Phyllis Wheatley Hall, 3rd Floor · Also on Zoom", "tags": ["event", "wellness"] },
+  { "id": "10", "icon": "📅", "text": "No classes Apr 20 (Patriots Day) · Spring schedule ends May 15", "tags": ["info", "closure"] }
 ]

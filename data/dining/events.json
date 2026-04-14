@@ -1,6 +1,12 @@
 [
-  { "dow": "Mon.", "time": "7:00 AM", "date": "Today", "name": "Breakfast", "meta": "Main Dining Hall", "tags": ["breakfast", "daily"] },
-  { "dow": "Mon.", "time": "11:00 AM", "date": "Today", "name": "Lunch", "meta": "Main Dining Hall", "tags": ["lunch", "daily"] },
-  { "dow": "Mon.", "time": "5:00 PM", "date": "Today", "name": "Dinner", "meta": "Main Dining Hall", "tags": ["dinner", "daily"] },
-  { "dow": "Tue.", "time": "7:00 AM", "date": "Tomorrow", "name": "Breakfast", "meta": "Main Dining Hall", "tags": ["breakfast", "daily"] }
+  { "dow": "Mon.", "time": "6:00 AM", "date": "Today", "name": "Campus Center Opens", "meta": "100 Morrissey Blvd · Mon–Fri 6AM–11:30PM", "tags": ["hours", "daily"] },
+  { "dow": "Mon.", "time": "7:00 AM", "date": "Today", "name": "Breakfast Service", "meta": "Campus Center Food Court", "tags": ["breakfast", "daily"] },
+  { "dow": "Mon.", "time": "11:00 AM", "date": "Today", "name": "Lunch Service", "meta": "Campus Center Food Court", "tags": ["lunch", "daily"] },
+  { "dow": "Mon.", "time": "5:00 PM", "date": "Today", "name": "Dinner Service", "meta": "Campus Center Food Court", "tags": ["dinner", "daily"] },
+  { "dow": "Tue.", "time": "7:00 AM", "date": "Tomorrow", "name": "Breakfast Service", "meta": "Campus Center Food Court", "tags": ["breakfast", "daily"] },
+  { "dow": "Tue.", "time": "11:00 AM", "date": "Tomorrow", "name": "Lunch Service", "meta": "Campus Center Food Court", "tags": ["lunch", "daily"] },
+  { "dow": "Tue.", "time": "5:00 PM", "date": "Tomorrow", "name": "Dinner Service", "meta": "Campus Center Food Court", "tags": ["dinner", "daily"] },
+  { "dow": "Wed.", "time": "7:00 AM", "date": "Apr 16", "name": "Breakfast Service", "meta": "Campus Center Food Court", "tags": ["breakfast", "daily"] },
+  { "dow": "Wed.", "time": "11:00 AM", "date": "Apr 16", "name": "Lunch Service", "meta": "Campus Center Food Court", "tags": ["lunch", "daily"] },
+  { "dow": "Wed.", "time": "5:00 PM", "date": "Apr 16", "name": "Dinner Service", "meta": "Campus Center Food Court", "tags": ["dinner", "daily"] }
 ]
